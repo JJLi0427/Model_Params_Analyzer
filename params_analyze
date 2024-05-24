@@ -1,0 +1,122 @@
+import json
+import os
+from pyecharts import options as opts
+from pyecharts.charts import Tree, TreeMap, Page
+
+def dict_to_tree(name, param_dict):
+    children = []
+    for key, value in param_dict.items():
+        if key not in [
+            'params', 
+            'percentage', 
+            'params.sum', 
+            'percentage.sum', 
+        ]:
+            if isinstance(value, dict):
+                children.append(dict_to_tree(key, value))
+            else:
+                children.append({"name": f"{key}: {value}"})
+    return {"name": name, "children": children}
+
+def dict_to_TreeMap(param_dict):
+    result = []
+    for name, value in param_dict.items():
+        if isinstance(value, dict):
+            children = []
+            for key, subvalue in value.items():
+                if key not in ['params', 'percentage', 'params.sum', 'percentage.sum']:
+                    if isinstance(subvalue, dict):
+                        children.extend(dict_to_TreeMap({key: subvalue}))
+                    else:
+                        children.extend({"name": f"{key}: {subvalue}", "value": subvalue})
+            if 'params.sum' in value:
+                value_sum = value['params.sum']
+            elif 'params' in value:
+                value_sum = value['params']
+            else:
+                value_sum = 0
+            result.append({"name": name, "value": value_sum, "children": children})
+    return result
+
+def calculate_parameters(model):
+    os.makedirs("params_analyze", exist_ok=True)
+    
+    param_dict = {}
+    total_params = 0
+
+    for name, param in model.named_parameters():
+        if param.requires_grad:
+            num_params = param.numel()
+            total_params += num_params
+
+            # Split the name by '.' and create nested dictionaries
+            keys = name.split('.')
+            sub_dict = param_dict
+            for key in keys[:-1]:
+                if key not in sub_dict:
+                    sub_dict[key] = {}
+                sub_dict = sub_dict[key]
+
+            # Add the parameter count and percentage to the innermost dictionary
+            sub_dict[keys[-1]] = {'params': num_params, 'percentage': num_params / total_params * 100}
+
+    # Add sum of parameters and their percentages at each level
+    def add_sums(sub_dict):
+        params_sum = 0
+        percentage_sum = 0
+        for key, value in sub_dict.items():
+            if isinstance(value, dict):
+                if 'params' in value and 'percentage' in value:
+                    params_sum += value['params']
+                    percentage_sum += value['percentage']
+                else:
+                    value = add_sums(value)
+                    params_sum += value.get('params.sum', 0)
+                    percentage_sum += value.get('percentage.sum', 0)
+        sub_dict['params.sum'] = params_sum
+        sub_dict['percentage.sum'] = percentage_sum
+        return sub_dict
+
+    param_dict = add_sums(param_dict)
+
+    # Convert the parameter dictionary to a tree
+    tree_data = [dict_to_tree("Model", param_dict)]
+    TreeMap_data = dict_to_TreeMap(param_dict)
+    
+    page = Page() 
+    
+    # Create a Tree chart
+    tree = (
+        Tree(init_opts=opts.InitOpts(width="1920px", height="1080px"))
+        .add(
+            "", 
+            tree_data, 
+            collapse_interval=2,
+        )
+        .set_global_opts(title_opts=opts.TitleOpts(title="Model Parameters"))
+    )
+
+    # Create a TreeMap chart
+    treemap = (
+        TreeMap(init_opts=opts.InitOpts(width="1920px", height="1080px"))
+        .add(
+            "", 
+            TreeMap_data, 
+            label_opts=opts.LabelOpts(is_show=True, position="inside"),
+        )
+        .set_global_opts(title_opts=opts.TitleOpts(title="Portion Map"))
+    )
+
+    # Combine the charts using Grid
+    page.add(tree)
+    page.add(treemap)
+    # Render the chart
+    
+    page.render("./params_analyze/model_parameters.html")
+    
+    with open('./params_analyze/model_params.json', 'w') as f:
+        json.dump(param_dict, f, indent=4)
+    print("Parameters and their percentages have been saved to 'model_params.json'.")
+
+# Usage:
+# calculate_parameters(model)
