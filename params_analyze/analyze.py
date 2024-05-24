@@ -3,7 +3,6 @@
 
 import os
 import json
-import threading
 import webbrowser
 import http.server
 import socketserver
@@ -109,9 +108,11 @@ def save_parameters_to_json(param_dict: dict):
     Save the parameters and their percentages to a JSON file.
     :param param_dict: The dictionary containing the parameters and their percentages.
     """
-    with open('./params_analyze/model_params.json', 'w') as f:
-        json.dump(param_dict, f, indent=4)
-    print("Parameters and their percentages have been saved to 'model_params.json'.")
+    try:
+        with open('./params_analyze/model_params.json', 'w') as f:
+            json.dump(param_dict, f, indent=4)
+    except IOError as e:
+        print("Failed to save parameters to JSON: {}".format(e))
 
 
 def start_http_server(port: int):
@@ -119,15 +120,14 @@ def start_http_server(port: int):
     Start an HTTP server to serve the charts.
     :param port: The port to use for the HTTP server. If not specified, the browser will not be opened.
     """
-    if port is not None:
-        Handler = http.server.SimpleHTTPRequestHandler
-
-        # use a new threading to open the browser
-        with socketserver.TCPServer(("", port), Handler) as httpd:
-            thread = threading.Thread(target=httpd.serve_forever)
-            thread.start()
-
-            webbrowser.open_new_tab('http://localhost:{}/params_analyze/model_parameters.html'.format(port))
+    try:
+        if port is not None:
+            Handler = http.server.SimpleHTTPRequestHandler
+            with socketserver.TCPServer(("", port), Handler) as httpd:
+                webbrowser.open_new_tab('http://localhost:{}/params_analyze/model_parameters.html'.format(port))
+                httpd.serve_forever()
+    except Exception as e:
+        print("Failed to start HTTP server: {}".format(e))
 
 
 def calculate_parameters(model: object, port: Optional[int]=None):
@@ -135,12 +135,14 @@ def calculate_parameters(model: object, port: Optional[int]=None):
     Calculate the number of parameters in the model and their percentages.
     Draw a tree chart and a TreeMap chart to visualize the parameters.
     :param model: The model to analyze.
-    :param port: The port to use for the HTTP server. If not specified, the browser will not be opened.
+    :param port: The port to use for the HTTP server. If not specified, the browser will not be opened. Recommended only use in Debug mode. If you want to use in training, it will block the training process.
     """
-    os.makedirs("params_analyze", exist_ok=True)
-    
-    param_dict, total_params = calculate_parameters_and_percentages(model)
-    param_dict = add_sums(param_dict)
-    create_charts(param_dict)
-    save_parameters_to_json(param_dict)
-    start_http_server(port)
+    try:
+        os.makedirs("params_analyze", exist_ok=True)
+        param_dict, _ = calculate_parameters_and_percentages(model)
+        param_dict = add_sums(param_dict)
+        create_charts(param_dict)
+        save_parameters_to_json(param_dict)
+        start_http_server(port)
+    except Exception as e:
+        print("Failed to calculate parameters: {}".format(e))
