@@ -1,0 +1,31 @@
+name: Build Python 🐍 distributions 📦 on push to main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build Python 🐍 distributions 📦
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+
+    - name: Install pypa/build
+      run: python -m pip install build
+
+    - name: Build a binary wheel and a source tarball
+      run: python -m build --sdist --wheel . --outdir dist/
+
+    - name: Install twine
+      run: python -m pip install twine
+
+    - name: Check distribution
+      run: twine check dist/*
