@@ -9,7 +9,7 @@ This is a Python package that helps you analyze the parameters of your models. I
 To install this package, you can use pip:
 
 ```sh
-pip install params_analyze
+pip install mpanalyze
 ```
 
 ## Usage
@@ -17,7 +17,7 @@ pip install params_analyze
 You can use this package from the command line with the follow command:
 
 ```python
-from params_analyze import calculate_parameters
+from mpanalyze import calculate_parameters
 calculate_parameters(${model})
 ```
 
