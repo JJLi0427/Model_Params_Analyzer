@@ -6,7 +6,7 @@ on:
 
 jobs:
   publish:
-    name: Publish Python 🐍 distributions 📦 to PyPI
+    name: Publish Package
     runs-on: ubuntu-22.04
 
     steps:
