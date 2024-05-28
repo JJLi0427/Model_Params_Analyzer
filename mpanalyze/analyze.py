@@ -1,5 +1,5 @@
 # Usage:
-# calculate_parameters(model)
+# mpanalyze.params_analyze(${model})
 
 from typing import Optional
 from .utils import save_parameters_to_json, start_http_server, make_analyze_dir
