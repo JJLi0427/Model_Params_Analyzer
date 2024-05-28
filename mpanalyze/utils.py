@@ -1,4 +1,5 @@
 import os
+import time
 import json
 import webbrowser
 import http.server
@@ -10,9 +11,10 @@ def make_analyze_dir(dir_name: str):
     :param dir_name: The name of the directory to save the charts and JSON file.
     """
     try:
+        timestamp = time.strftime("%Y%m%d-%H%M%S")
         if dir_name is not None:
-            os.makedirs(f"{dir_name}_params_analyze", exist_ok=True)
-        os.makedirs("params_analyze", exist_ok=True)
+            os.makedirs(f"{dir_name}_mpanalyze_{timestamp}", exist_ok=True)
+        os.makedirs(f"mpanalyze_{timestamp}", exist_ok=True)
     except Exception as e:
         print("Failed to create directories: {}".format(e))
         
@@ -39,6 +41,7 @@ def start_http_server(port: int):
     """
     try:
         if port is not None:
+            print("Starting HTTP server...If in training, it will block the training process.")
             Handler = http.server.SimpleHTTPRequestHandler
             with socketserver.TCPServer(("", port), Handler) as httpd:
                 webbrowser.open_new_tab('http://localhost:{}/params_analyze/model_parameters.html'.format(port))
