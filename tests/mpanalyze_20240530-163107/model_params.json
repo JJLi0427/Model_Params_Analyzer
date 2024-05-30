@@ -1,0 +1,220 @@
+{
+    "encoder": {
+        "0": {
+            "weight": {
+                "params": 144,
+                "percentage": 100.0
+            },
+            "bias": {
+                "params": 16,
+                "percentage": 10.0
+            },
+            "params.sum": 160,
+            "percentage.sum": 110.0
+        },
+        "2": {
+            "conv1": {
+                "weight": {
+                    "params": 2304,
+                    "percentage": 93.5064935064935
+                },
+                "bias": {
+                    "params": 16,
+                    "percentage": 0.6451612903225806
+                },
+                "params.sum": 2320,
+                "percentage.sum": 94.15165479681608
+            },
+            "conv2": {
+                "weight": {
+                    "params": 2304,
+                    "percentage": 48.16053511705686
+                },
+                "bias": {
+                    "params": 16,
+                    "percentage": 0.33333333333333337
+                },
+                "params.sum": 2320,
+                "percentage.sum": 48.493868450390195
+            },
+            "params.sum": 4640,
+            "percentage.sum": 142.64552324720626
+        },
+        "3": {
+            "weight": {
+                "params": 2304,
+                "percentage": 32.432432432432435
+            },
+            "bias": {
+                "params": 16,
+                "percentage": 0.22471910112359553
+            },
+            "params.sum": 2320,
+            "percentage.sum": 32.65715153355603
+        },
+        "6": {
+            "conv1": {
+                "weight": {
+                    "params": 2304,
+                    "percentage": 24.448217317487266
+                },
+                "bias": {
+                    "params": 16,
+                    "percentage": 0.1694915254237288
+                },
+                "params.sum": 2320,
+                "percentage.sum": 24.617708842910996
+            },
+            "conv2": {
+                "weight": {
+                    "params": 2304,
+                    "percentage": 19.618528610354225
+                },
+                "bias": {
+                    "params": 16,
+                    "percentage": 0.13605442176870747
+                },
+                "params.sum": 2320,
+                "percentage.sum": 19.754583032122934
+            },
+            "params.sum": 4640,
+            "percentage.sum": 44.37229187503393
+        },
+        "7": {
+            "weight": {
+                "params": 1728,
+                "percentage": 12.811387900355871
+            },
+            "bias": {
+                "params": 12,
+                "percentage": 0.08888888888888889
+            },
+            "params.sum": 1740,
+            "percentage.sum": 12.90027678924476
+        },
+        "9": {
+            "weight": {
+                "params": 864,
+                "percentage": 6.015037593984962
+            },
+            "bias": {
+                "params": 8,
+                "percentage": 0.055663790704146954
+            },
+            "params.sum": 872,
+            "percentage.sum": 6.070701384689109
+        },
+        "params.sum": 14372,
+        "percentage.sum": 348.64594482973007
+    },
+    "decoder": {
+        "0": {
+            "weight": {
+                "params": 576,
+                "percentage": 3.853358308803853
+            },
+            "bias": {
+                "params": 8,
+                "percentage": 0.05349023803155924
+            },
+            "params.sum": 584,
+            "percentage.sum": 3.9068485468354126
+        },
+        "2": {
+            "conv1": {
+                "weight": {
+                    "params": 576,
+                    "percentage": 3.708472830285862
+                },
+                "bias": {
+                    "params": 8,
+                    "percentage": 0.05148005148005148
+                },
+                "params.sum": 584,
+                "percentage.sum": 3.7599528817659134
+            },
+            "conv2": {
+                "weight": {
+                    "params": 576,
+                    "percentage": 3.5740878629932986
+                },
+                "bias": {
+                    "params": 8,
+                    "percentage": 0.04961548002976929
+                },
+                "params.sum": 584,
+                "percentage.sum": 3.623703343023068
+            },
+            "params.sum": 1168,
+            "percentage.sum": 7.383656224788981
+        },
+        "3": {
+            "weight": {
+                "params": 864,
+                "percentage": 5.085943018601366
+            },
+            "bias": {
+                "params": 12,
+                "percentage": 0.07058823529411765
+            },
+            "params.sum": 876,
+            "percentage.sum": 5.1565312538954835
+        },
+        "5": {
+            "weight": {
+                "params": 768,
+                "percentage": 4.322377307519135
+            },
+            "bias": {
+                "params": 16,
+                "percentage": 0.0899685110211426
+            },
+            "params.sum": 784,
+            "percentage.sum": 4.4123458185402775
+        },
+        "7": {
+            "conv1": {
+                "weight": {
+                    "params": 2304,
+                    "percentage": 11.469534050179211
+                },
+                "bias": {
+                    "params": 16,
+                    "percentage": 0.07958615200955034
+                },
+                "params.sum": 2320,
+                "percentage.sum": 11.549120202188762
+            },
+            "conv2": {
+                "weight": {
+                    "params": 2304,
+                    "percentage": 10.282042127811495
+                },
+                "bias": {
+                    "params": 16,
+                    "percentage": 0.07135212272565108
+                },
+                "params.sum": 2320,
+                "percentage.sum": 10.353394250537146
+            },
+            "params.sum": 4640,
+            "percentage.sum": 21.90251445272591
+        },
+        "8": {
+            "weight": {
+                "params": 144,
+                "percentage": 0.6380716058135413
+            },
+            "bias": {
+                "params": 1,
+                "percentage": 0.004430856484558465
+            },
+            "params.sum": 145,
+            "percentage.sum": 0.6425024622980997
+        },
+        "params.sum": 8197,
+        "percentage.sum": 43.40439875908416
+    },
+    "params.sum": 22569,
+    "percentage.sum": 392.05034358881426
+}
