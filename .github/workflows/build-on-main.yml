@@ -29,3 +29,12 @@ jobs:
 
     - name: Check distribution
       run: twine check dist/*
+
+    - name: Build a binary wheel and a source tarball
+      run: python -m build --sdist --wheel . --outdir dist/
+
+    - name: Upload distribution as artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: dist
+        path: dist/
